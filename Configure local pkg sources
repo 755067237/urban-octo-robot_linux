@@ -29,3 +29,41 @@ yum makecache
 
 #安装ifconfig
 yum install -y net-tools
+
+
+==============================================================================
+
+
+ubuntu 16.4配置apt源
+
+挂载镜像到目录：
+$  sudo mount -o loop /home/tmp/ubuntu-16.04.5-server-amd64.iso /home/newsanx/iso1
+
+
+下面就以ubuntu10.04 LTS这个长期支持版为大家作一下介绍。
+
+下面配置本地apt源:
+
+cd /etc/apt                                #进入到apt源的目录
+sudo cp sources.list  sources.list_bk      #做好备份是第一要义噢
+sudo vi sources.list                       #编辑一个源
+将以下信息写入文件sources.list中，
+deb file:///home/newsanx/iso1/ubuntu xenial main
+deb file:///home/newsanx/iso1/ubuntu xenial restricted
+即：
+newsanx@bogon:~$ cat /etc/apt/sources.list
+deb file:///home/newsanx/iso1/ubuntu xenial main
+deb file:///home/newsanx/iso1/ubuntu xenial restricted
+newsanx@bogon:~$ 
+
+说明：
+deb file://   #debian系列ISO源的固定格式
+/home/newsanx/iso1     #ISO镜像的挂载点(依各自挂载目录而定噢)
+ubuntu         #ISO镜像中的ubuntu目录
+xenial              #发行版代号或昵称
+
+只需修改，挂载目录和版本代号即可，也就是上面的/home/newsanx/iso1  和 xenial 
+
+最后，执行
+$ apt-get update
+
