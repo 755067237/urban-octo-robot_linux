@@ -1,0 +1,31 @@
+centos7配置yum源
+
+
+1、挂载iso到vm
+# mount -o loop /home/CentOS-7-x86_64-DVD-1503-01.iso /mnt/yum/
+# mkdir /mnt/cdrom
+# cp -r /mnt/yum/ /mnt/cdrom
+
+2、修改yum源配置 
+yum源配置目录为“/etc/yum.repo.d/”，网络不可用，所以直接删除掉里面的默认配置“rm -f *”，然后建立本地yum源文件”local.repo”。 
+# cd /etc;
+# cp -r yum.repos.d/ yum.repos.d_bk
+# cd /etc/yum.repos.d;
+# rm -rf *;
+# touch local.repo
+yum源配置文件都是以repo结尾，以下是local.repo的具体内容：
+
+[local_server]
+name=This is a local repo
+baseurl=file:///mnt/cdrom
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+3、更新yum配置
+yum clean all;
+yum makecache
+通过上面的步骤操作，已经可以使用本地yum源了。有需要进行安装的软件包就可以直接运行”yum install xxx“进行安装了。
+
+#安装ifconfig
+yum install -y net-tools
